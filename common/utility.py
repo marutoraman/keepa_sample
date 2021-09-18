@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 
 def now_timestamp():
-    return dt.now().strftime("%Y-%m-%d %H:%M:%S")
+    return dt.now().strftime("%Y-%m-%d_%H_%M_%S")
 
 def list_to_bool(l:list):
     bool_list=[]
@@ -43,3 +43,13 @@ def split_list(l, n):
     """
     for idx in range(0, len(l), n):
         yield l[idx:idx + n]
+
+
+def fetch_currency_rate(base: str, to: str):
+    res = requests.get("http://fx.mybluemix.net/")
+    res.raise_for_status()
+    res_dict = res.json()
+    try:
+        return res_dict["result"]["rate"][base + to]
+    except:
+        raise Exception(f"exchange currency error: {base}->{to}")

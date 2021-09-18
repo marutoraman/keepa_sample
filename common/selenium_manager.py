@@ -50,7 +50,7 @@ class SeleniumManager():
         self.options.add_argument('log-level=3') 
         self.options.add_argument('--ignore-certificate-errors')
         self.options.add_argument('--ignore-ssl-errors')
-        
+        self.options.add_argument('--user-data-dir=' + os.path.join(os.getcwd(),"profile"))
         #self.options.add_argument('--incognito')          # シークレットモードの設定を付与
         # self.options.add_argument('--no-sandbox')          # docker環境では必須
         # self.options.add_argument('disable-infobars') # AmazonLinux用
