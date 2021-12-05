@@ -2,6 +2,12 @@
 from datetime import datetime as dt
 from bs4 import BeautifulSoup as bs
 import requests
+import re
+import ssl
+import urllib.request
+import urllib.error
+import io
+import boto3
 
 def now_timestamp():
     return dt.now().strftime("%Y-%m-%d_%H_%M_%S")
@@ -53,3 +59,44 @@ def fetch_currency_rate(base: str, to: str):
         return res_dict["result"]["rate"][base + to]
     except:
         raise Exception(f"exchange currency error: {base}->{to}")
+    
+
+def min_ignore_none(input: list):
+    try:
+        return min(value for value in input if value is not None)
+    except:
+        return None
+    
+
+
+def re_search(pettern: str, target: str):
+    try:
+        m = re.search(pettern, target)
+        if m == None:
+            return None
+        else:
+            try:
+                return m.group(1)
+            except:
+                return None
+    except:
+        return None
+    
+def datetime_to_string(input_datetime, format: str="%Y-%m-%d %H:%M:%S"):
+    return dt.strftime(input_datetime, format)
+
+
+def download_image_to_byte(url: str):
+    try:
+        ext = url.split(".")[-1]
+    except:
+        ext = ""
+        
+    # 画像URLからダウンロード
+    try:
+        ssl._create_default_https_context = ssl._create_unverified_context
+        with urllib.request.urlopen(url) as web_file:
+            return io.BytesIO(web_file.read())
+    except urllib.error.URLError as e:
+        print(e)
+        raise Exception(f"image download error: {e}")

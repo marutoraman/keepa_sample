@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 import glob
 
-LOG_FORMAT='%(asctime)s - %(levelname)s - %(filename)s - %(name)s - %(funcName)s - %(message)s'
+LOG_FORMAT='%(asctime)s - %(levelname)s - %(filename)s - %(name)s - %(funcName)s(line:%(lineno)d) - %(message)s'
 LOG_DIR_NAME='logs'
 MAX_LOG_COUNT=100
 
@@ -20,7 +20,7 @@ def set_logger(name):
     formatter = logging.Formatter(LOG_FORMAT)
     
     # ファイル出力用のHandlerを設定
-    fh = logging.FileHandler(filename=f'{LOG_DIR_NAME}/{now_time:log_%Y%m%d%H%M%S}.log',encoding="utf-8")
+    fh = logging.FileHandler(filename=f'{LOG_DIR_NAME}/{now_time:log_%Y%m%d_%H}.log',encoding="utf-8")
     fh.setFormatter(formatter)
     fh.setLevel=logging.INFO
 
